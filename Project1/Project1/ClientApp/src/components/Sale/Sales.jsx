@@ -71,7 +71,7 @@ export default class Sales extends Component {
     }
 
     fetchCustomer = () => {
-        axios.get("Customers/GetCustomers")
+        axios.get("Customers/GetCustomer")
             .then((res) => {
                 this.setState({
                     customers: res.data,
@@ -83,7 +83,7 @@ export default class Sales extends Component {
     }
 
     fetchProducts = () => {
-        axios.get("Products/GetProducts")
+        axios.get("Products/GetProduct")
             .then((res) => {
                 this.setState({
                     products: res.data,
@@ -95,7 +95,7 @@ export default class Sales extends Component {
     }
 
     fetchStores = () => {
-        axios.get("Stores/GetStores")
+        axios.get("Stores/GetStore")
             .then((res) => {
                 this.setState({
                     stores: res.data,

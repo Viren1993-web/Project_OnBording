@@ -30,7 +30,7 @@ export class Stores extends Component {
  **************************************/
     fetchStoreData() {
         console.log("Stores:fetchStoreData")
-        axios.get('/Stores/GetStores')
+        axios.get('/Stores/GetStore')
             .then((res) => {
                 // handle success
                 console.log(res.data);

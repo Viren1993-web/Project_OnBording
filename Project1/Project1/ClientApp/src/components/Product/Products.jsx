@@ -31,7 +31,7 @@ export class Products extends Component {
  **************************************/
     fetchProductData() {
         console.log("Products:fetchProductData")
-        axios.get('/Products/GetProducts')
+        axios.get('/Products/GetProduct')
             .then((res) => {
                 // handle success
                 console.log(res.data);

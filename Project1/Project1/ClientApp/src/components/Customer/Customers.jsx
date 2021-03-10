@@ -30,7 +30,7 @@ export class Customers extends Component {
  **************************************/
     fetchCustomerData() {
         console.log("Customers:fetchCustomerData")
-        axios.get('/Customers/GetCustomers')
+        axios.get('/Customers/GetCustomer')
             .then( (res) => {
                 // handle success
                 console.log(res.data);
