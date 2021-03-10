@@ -149,7 +149,7 @@ export class Stores extends Component {
                     toggleUpdateModal={() => this.toggleUpdateModal()} 
                     fetchStoreData={() => this.fetchStoreData()} 
                     store={store} />
-                    <h1> S T O R E S </h1>
+                    <h1> S T O R E S .......</h1>
                     <Button color='blue' content='Add New Store' onClick={this.toggleCreateModal} />
                     <Table  inverted>
             <Table.Header>

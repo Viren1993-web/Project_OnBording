@@ -6,7 +6,7 @@ function DeleteSaleModal(props) {
     const { open, toggleDeleteModal, fetchSales, idToDelete } = props;
 
     const submit = () => {
-        axios.delete(`Sales/DeleteSale/${idToDelete}`)
+        axios.delete(`Sales/DeleteSales/${idToDelete}`)
             .then(() => {
                 fetchSales();
                 toggleDeleteModal();

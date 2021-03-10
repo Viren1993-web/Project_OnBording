@@ -83,7 +83,7 @@ function UpdateSaleModal(props) {
   const submit = () => {
     if (checking()) {
       axios
-        .put(`Sales/PutSale/${salesToEdit.id}`, {
+        .put(`Sales/PutSales/${salesToEdit.id}`, {
           id: salesToEdit.id,
           productId: selectedProductId,
           customerId: selectedCustomerId,

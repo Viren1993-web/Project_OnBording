@@ -64,7 +64,7 @@ function SalesCreateModal(props) {
         if (checking()) {
             const UpdateDate = date.substring(6) + '-' + date.substring(3, 5) + '-' + date.substring(0, 2);
             axios
-                .post("Sales/PostSale", {
+                .post("Sales/PostSales", {
                     productId: selectedProductId,
                     customerId: selectedCustomerId,
                     storeId: selectedStoreId,

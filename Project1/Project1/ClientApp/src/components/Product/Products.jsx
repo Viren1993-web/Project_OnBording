@@ -151,7 +151,7 @@ export class Products extends Component {
                     fetchProductData={() => this.fetchProductData()} 
                     product={product} />
 
-                    <h1> P R O D U C T S </h1>
+                    <h1> P R O D U C T S .......</h1>
                     <Button color='blue' content='Add New Product' onClick={this.toggleCreateModal} />
                     <Table inverted>
             <Table.Header>

@@ -166,16 +166,17 @@ export default class Sales extends Component {
                         stores={stores}
                         fetchSales={() => this.fetchSales()}
                     />
+                     <h1> S A L E S...... </h1>
                     <Button primary className='CREATE' onClick={() => this.toggleNewModal()}>Create Sales</Button>
-                    <Table >
+                    <Table inverted>
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Customer</Table.HeaderCell>
-                                <Table.HeaderCell>Product</Table.HeaderCell>
-                                <Table.HeaderCell>Store</Table.HeaderCell>
-                                <Table.HeaderCell>Date Sold</Table.HeaderCell>
-                                <Table.HeaderCell>Action</Table.HeaderCell>
-                                <Table.HeaderCell>Action</Table.HeaderCell>
+                                <Table.HeaderCell>CUSTOMER</Table.HeaderCell>
+                                <Table.HeaderCell>PRODUCT</Table.HeaderCell>
+                                <Table.HeaderCell>STORE</Table.HeaderCell>
+                                <Table.HeaderCell>SOLED DATE</Table.HeaderCell>
+                                <Table.HeaderCell>ACTION</Table.HeaderCell>
+                                <Table.HeaderCell>ACTION</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
