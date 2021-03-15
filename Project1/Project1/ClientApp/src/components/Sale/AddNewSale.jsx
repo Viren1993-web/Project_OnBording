@@ -6,11 +6,11 @@ function SalesCreateModal(props) {
     const { open, toggleNewModal, customers, products, stores, fetchSales } = props;
     //formatxxx is for the dropdown list display style purpose (display text and value)
     const [formatcustomers] = useState([]);
-    const [selectedCustomerId, setSelectedCustomerId] = useState();
+    const [selectedCustomerId, setSelectedCustomerId] = useState(null);
     const [formatproducts] = useState([]);
-    const [selectedProductId, setSelectedProductId] = useState();
+    const [selectedProductId, setSelectedProductId] = useState(null);
     const [formatstores] = useState([]);
-    const [selectedStoreId, setSelectedStoreId] = useState();
+    const [selectedStoreId, setSelectedStoreId] = useState(null);
     const [date, setDate] = useState(null);
     const [disable, setDisable] = useState(true);
 
@@ -61,8 +61,8 @@ function SalesCreateModal(props) {
     }
 
     const submit = () => {
-       /*  if (checking()) {
-            const UpdateDate = date.substring(6) + '-' + date.substring(3, 5) + '-' + date.substring(0, 2); */
+        var msg = ""
+        if (selectedCustomerId != null && selectedProductId != null && selectedStoreId != null && date != null) {
             axios
                 .post("Sales/PostSales", {
                     productId: selectedProductId,
@@ -72,19 +72,62 @@ function SalesCreateModal(props) {
                 })
                 .then(() => {
                     toggleNewModal();
+                    resetNewSalesData();
                     fetchSales();
                 })
-                .catch((e) => alert(e));
-        }
-   /* }
-     const checking = () => {
-        if (date.length !== 10 || date[2] !== '/' || date[5] !== '/') {
-            alert("Please input date in the format dd/mm/yyyy");
-            return false;
+                .catch(function (err) {
+                   
+                    resetNewSalesData();
+                   
+                  });
         } else {
-            return true;
+            /* Show Alert on blank Sales details */
+            if (selectedCustomerId == null) {
+                msg = "Customer info is empty..\n"
+            }
+            if (selectedProductId == null) {
+                msg = msg + "Product info is empty..\n"
+            }
+            if (selectedStoreId == null) {
+                msg = msg + "Store info is empty..\n"
+            }
+            if (date == null) {
+                msg = msg + "SaleDate info is empty..\n\n"
+            }
+            msg = msg + "Please enter the correct Sale Details\n"
+            alert(msg)
         }
-    } */
+    }
+    /*********************************************************************************** 
+* Function to Update the local state fields to null before exiting the AddNewSale
+***********************************************************************************/
+    const resetNewSalesData = () => {
+        setcid(null)
+        setpid(null)
+        setsid(null)
+        setsdate(null)
+        console.log("AddNewSale:resetNewSalesData:Customer id: " + cid + " Product id: " + pid + " Store id: " + sid + " Sale date: " + sdate)
+    }
+
+    /*********************************************************************************** 
+     * on Cancel, Function to Update the local state fields to null before exiting the AddNewSale
+     ***********************************************************************************/
+    const resetNewSalesDataOnCancel = () => {
+        resetNewSalesData();
+        toggleCreateModal();
+        console.log("AddNewSale:resetNewSalesDataOnCancel:Customer id: " + cid + " Product id: " + pid + " Store id: " + sid + " Sale date: " + sdate)
+    }
+
+
+    /* }
+      const checking = () => {
+         if (date.length !== 10 || date[2] !== '/' || date[5] !== '/') {
+             alert("Please input date in the format dd/mm/yyyy");
+             return false;
+         } else {
+             return true;
+         }
+     } */
     return (
         <Modal
             open={open}
@@ -141,7 +184,7 @@ function SalesCreateModal(props) {
                     labelPosition='right'
                     icon='checkmark'
                     onClick={() => submit()}
-                  /*   disabled={disable} */
+                    /*   disabled={disable} */
                     positive
                 />
             </Modal.Actions>

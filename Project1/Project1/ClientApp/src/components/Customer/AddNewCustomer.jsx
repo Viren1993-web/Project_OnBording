@@ -7,8 +7,8 @@ import axios from 'axios'
  **************************************/
 const AddNewCustomer = (props) => {
   const {open, toggleCreateModal, fetchCustomerData} = props;
-  const [name, setname] = useState("");
-  const [address, setaddress] = useState("");
+  const [name, setname] = useState(null);
+  const [address, setaddress] = useState(null);
   useEffect(() => {
     console.log(name+address)
 return() => {
@@ -20,7 +20,9 @@ return() => {
 /************************************* 
  * Function to Add/Create Customer using axios
  **************************************/
- const createCustomer = () => { 
+ const createCustomer = () => {  var msg =""
+ if(name != null && address != null ) {
+   if((name.localeCompare("") !== 0 && address.localeCompare("")!== 0) ) {
   axios.post('/Customers/PostCustomer', {
     name: name,
     address: address
@@ -28,14 +30,54 @@ return() => {
   .then(function (res) {
     console.log(res);
     fetchCustomerData();
+    resetNewSalesData();
     toggleCreateModal();
   })
   .catch(function (err) {
     console.log(err);
+    resetNewSalesData();
     toggleCreateModal();
   });
+ }else {
+  /* Show Alert on blank Sales details */
+if(name.localeCompare("") === 0) {
+  msg="Customer Name field is empty..\n"
+} 
+if(address.localeCompare("") === 0) {
+  msg=msg+"Customer Address field is empty..\n"
+}
+msg=msg+"Please enter the correct Customer Details\n"
+alert(msg)
  }
+} else {
+  /* Show Alert on null Sales details */
+if(name == null) {
+  msg="Customer Name field is empty..\n"
+} 
+if(address == null) {
+  msg=msg+"Customer Address field is empty..\n"
+}
+msg=msg+"Please enter the correct Customer Details\n"
+alert(msg)
+ }
+}
+ /*********************************************************************************** 
+   * Function to Update the local state fields to null before exiting the AddNewSale
+   ***********************************************************************************/
+  const resetNewSalesData = () =>{
+    setname(null)
+    setaddress(null)
+    console.log("AddNewSale:resetNewSalesData:Customer Name: "+name+" Customer Address: "+address)
+     }
 
+  /*********************************************************************************** 
+   * on Cancel, Function to Update the local state fields to null before exiting the AddNewSale
+   ***********************************************************************************/
+  const resetNewCustomersDataOnCancel = () =>{
+    resetNewSalesData();
+    toggleCreateModal();
+    console.log("AddNewSale:resetNewSalesData:Customer Name: "+name+" Customer Address: "+address)
+     }
  /************************************* 
  * Using Semantic UI Modal & Form as UI
  **************************************/
