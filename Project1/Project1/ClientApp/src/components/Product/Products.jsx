@@ -185,7 +185,7 @@ export class Products extends Component {
                             {Product.map((p,index) => {
                                  if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
                                     console.log("inside if:" + index)
-                                }
+                                
                                 return (
                                     <Table.Row key={p.id}>
 
@@ -199,7 +199,7 @@ export class Products extends Component {
                                         </Table.Cell>
                                     </Table.Row>
                                 )
-                            })}
+        }})}
                         </Table.Body>
                     </Table>
                     <Pagination

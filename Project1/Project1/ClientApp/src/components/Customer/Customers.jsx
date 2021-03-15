@@ -132,7 +132,10 @@ export class Customers extends Component {
         * Functions pageChange set the Pagination attributes
         *************************************************************/
     pageChange = (e, pagData) => {
-        this.setState({ currentPage: pagData.activePage, totalPage: pagData.totalPages })
+        this.setState({
+            currentPage: pagData.activePage,
+            totalPage: pagData.totalPages
+        })
         console.log(pagData);
         console.log("Customers:pageChange:Saleid: Product id: Store id: Sale Time: ");
     }
@@ -188,7 +191,7 @@ export class Customers extends Component {
                             {customers.map((c, index) => {
                                 if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
                                     console.log("inside if:" + index)
-                                }
+                                
                                 return (
                                     <Table.Row key={c.id}>
                                         <Table.Cell>{c.name}</Table.Cell>
@@ -199,9 +202,10 @@ export class Customers extends Component {
                                         </Table.Cell>
                                     </Table.Row>
                                 )
-                            })}
+        }})}
                         </Table.Body>
                     </Table>
+                    
                     <Pagination
                         boundryRange={0}
                         activePage={currentPage}
@@ -211,10 +215,9 @@ export class Customers extends Component {
                         siblingRange={0}
                         totalPages={Math.ceil(totalCustomersRec / 4)}
                         onPageChange={(e, pageData) => this.pageChange(e, pageData)}
-
                     />
-
                     <h2> {currentPage}</h2>
+                   
                 </div>
             );
         } else {

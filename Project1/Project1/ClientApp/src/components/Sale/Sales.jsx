@@ -4,6 +4,7 @@ import axios from 'axios';
 import AddNewSale from './AddNewSale';
 import UpdateSaleModal from './UpdateSaleModal';
 import DeleteSaleModal from './DeleteSaleModal';
+import CurrencyFormat from 'react-currency-format'
 
 export default class Sales extends Component {
     constructor(props) {
@@ -49,10 +50,10 @@ export default class Sales extends Component {
     fetchSales = () => {
         axios.get("Sales/GetSales")
             .then((res) => {
-                res.data.forEach(element => {
+               /*  res.data.forEach(element => {
                     let editdate = new Date(element.dateSold);
                     element.dateSold = formatdate(editdate);
-                });
+                }); */
                 this.setState({
                     sales: res.data,
                     isloaded: true,
@@ -73,7 +74,7 @@ export default class Sales extends Component {
                 this.setState({ loaded: false })
             });
 
-        const formatdate = (editdate) => {
+       /*  const formatdate = (editdate) => {
             let year = editdate.getFullYear();
             let month = editdate.getMonth() + 1;
             let date = editdate.getDate();
@@ -81,7 +82,7 @@ export default class Sales extends Component {
             if (date < 10) { date = "0" + date }
             const finaldate = `${date}/${month}/${year}`;
             return finaldate;
-        }
+        } */
     }
 
     fetchCustomer = () => {
@@ -200,13 +201,15 @@ export default class Sales extends Component {
                             {sales.map((s,index) => {
                                  if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
                                     console.log("inside if:" + index)
-                                }
+                                
                                 return (
                                     <Table.Row key={s.id}>
                                         <Table.Cell>{s.customer.name}</Table.Cell>
                                         <Table.Cell>{s.product.name}</Table.Cell>
                                         <Table.Cell>{s.store.name}</Table.Cell>
-                                        <Table.Cell>{s.saledate}</Table.Cell>
+                                        <Table.Cell>
+                                        <CurrencyFormat format="####-##-##" displayType={'text'} value={s.saledate} />
+                                        </Table.Cell>
                                         <Table.Cell><Button
                                             color='yellow'
                                             content='Edit'
@@ -221,7 +224,7 @@ export default class Sales extends Component {
                                         /></Table.Cell>
                                     </Table.Row>
                                 );
-                            })}
+        }})}
 
                         </Table.Body>
                     </Table>

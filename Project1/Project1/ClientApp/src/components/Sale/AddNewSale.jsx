@@ -11,7 +11,7 @@ function SalesCreateModal(props) {
     const [selectedProductId, setSelectedProductId] = useState();
     const [formatstores] = useState([]);
     const [selectedStoreId, setSelectedStoreId] = useState();
-    const [date, setDate] = useState();
+    const [date, setDate] = useState(null);
     const [disable, setDisable] = useState(true);
 
     useEffect(() => {
@@ -61,14 +61,14 @@ function SalesCreateModal(props) {
     }
 
     const submit = () => {
-        if (checking()) {
-            const UpdateDate = date.substring(6) + '-' + date.substring(3, 5) + '-' + date.substring(0, 2);
+       /*  if (checking()) {
+            const UpdateDate = date.substring(6) + '-' + date.substring(3, 5) + '-' + date.substring(0, 2); */
             axios
                 .post("Sales/PostSales", {
                     productId: selectedProductId,
                     customerId: selectedCustomerId,
                     storeId: selectedStoreId,
-                    saledate: UpdateDate
+                    saledate: date
                 })
                 .then(() => {
                     toggleNewModal();
@@ -76,15 +76,15 @@ function SalesCreateModal(props) {
                 })
                 .catch((e) => alert(e));
         }
-    }
-    const checking = () => {
+   /* }
+     const checking = () => {
         if (date.length !== 10 || date[2] !== '/' || date[5] !== '/') {
             alert("Please input date in the format dd/mm/yyyy");
             return false;
         } else {
             return true;
         }
-    }
+    } */
     return (
         <Modal
             open={open}
@@ -93,7 +93,7 @@ function SalesCreateModal(props) {
             <Modal.Content>
                 <h3>Date Sold</h3>
                 <Form.Field>
-                    <input placeholder='' onChange={(e) => setDate(e.target.value)} />
+                    <input type="datetime-local" placeholder='' onChange={(e) => setDate(e.target.value)} />
                 </Form.Field>
                 <h3>Customer</h3>
                 <Dropdown
@@ -141,7 +141,7 @@ function SalesCreateModal(props) {
                     labelPosition='right'
                     icon='checkmark'
                     onClick={() => submit()}
-                    disabled={disable}
+                  /*   disabled={disable} */
                     positive
                 />
             </Modal.Actions>

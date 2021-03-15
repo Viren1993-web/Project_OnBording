@@ -62,7 +62,7 @@ function UpdateSaleModal(props) {
   // End building the dropdowm list
 
   useEffect(() => {
-    setDate(salesToEdit.dateSold);
+    setDate(salesToEdit.saledate);
     setSelectedCustomerId(salesToEdit.customerId);
     setSelectedProductId(salesToEdit.productId);
     setSelectedStoreId(salesToEdit.storeId);
@@ -81,30 +81,29 @@ function UpdateSaleModal(props) {
   }
 
   const submit = () => {
-    if (checking()) {
-      axios
-        .put(`Sales/PutSales/${salesToEdit.id}`, {
-          id: salesToEdit.id,
-          productId: selectedProductId,
-          customerId: selectedCustomerId,
-          storeId: selectedStoreId,
-          saledate: date.substring(6) + '-' + date.substring(3, 5) + '-' + date.substring(0, 2)
-        })
-        .then(() => {
-          toggleUpdate();
-          fetchSales();
-        })
-        .catch((e) => alert(e));
-    }
+    axios
+      .put(`Sales/PutSales/${salesToEdit.id}`, {
+        id: salesToEdit.id,
+        productId: selectedProductId,
+        customerId: selectedCustomerId,
+        storeId: selectedStoreId,
+        saledate: date
+        /* .substring(6) + '-' + date.substring(3, 5) + '-' + date.substring(0, 2) */
+      })
+      .then(() => {
+        toggleUpdate();
+        fetchSales();
+      })
+      .catch((e) => alert(e));
   }
-  const checking = () => {
+  /* const checking = () => {
     if (date.length !== 10 || date[2] !== '/' || date[5] !== '/') {
       alert("Please input date in the format dd/mm/yyyy");
       return false;
     } else {
       return true;
     }
-  }
+  } */
   return (
     <Modal
       open={open}
@@ -113,7 +112,7 @@ function UpdateSaleModal(props) {
       <Modal.Content>
         <h3>Date Sold</h3>
         <Form.Field>
-          <input placeholder='' onChange={(e) => setDate(e.target.value)} defaultValue={salesToEdit.saledate} />
+          <input type="datetime-local" placeholder='' onChange={(e) => setDate(e.target.value)} defaultValue={salesToEdit.saledate} />
         </Form.Field>
         <h3>Customer</h3>
         <Dropdown

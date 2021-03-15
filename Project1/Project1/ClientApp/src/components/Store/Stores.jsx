@@ -20,7 +20,7 @@ export class Stores extends Component {
             openCreateModal: false,
             openDeleteModal: false,
             openUpdateModal: false,
-            store: {}, 
+            store: {},
             totalStoresRec: 0,
             currentPage: 1,
             totalPage: 1
@@ -187,22 +187,22 @@ export class Stores extends Component {
                         </Table.Header>
 
                         <Table.Body>
-                            {Store.map((s,index) => {
+                            {Store.map((s, index) => {
                                 if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
                                     console.log("inside if:" + index)
-                                }
-                                return (
-                                    <Table.Row key={s.id}>
 
-                                        <Table.Cell>{s.name}</Table.Cell>
-                                        <Table.Cell>{s.address}</Table.Cell>
-                                        <Table.Cell>
-                                            <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(s)} />
-                                            <Button color='red' content='Delete' icon='trash' onClick={() => this.setStateDeleteModal(s)} />
-                                        </Table.Cell>
-                                    </Table.Row>
-                                )
-                            })}
+                                    return (
+                                        <Table.Row key={s.id}>
+
+                                            <Table.Cell>{s.name}</Table.Cell>
+                                            <Table.Cell>{s.address}</Table.Cell>
+                                            <Table.Cell>
+                                                <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(s)} />
+                                                <Button color='red' content='Delete' icon='trash' onClick={() => this.setStateDeleteModal(s)} />
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    );
+                                }})}
                         </Table.Body>
                     </Table>
                     <Pagination
