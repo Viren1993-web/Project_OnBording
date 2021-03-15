@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button } from 'semantic-ui-react';
+import { Table, Button, Pagination } from 'semantic-ui-react';
 import AddNewStore from './AddNewStore';
 import DeleteStoreModal from './DeleteStoreModal';
 import UpdateStoreModal from './UpdateStoreModal';
@@ -11,23 +11,27 @@ import UpdateStoreModal from './UpdateStoreModal';
 export class Stores extends Component {
     static displayName = Stores.name;
 
- /***********************Constructor************/ 
+    /***********************Constructor************/
     constructor(props) {
         super(props);
-        this.state = { 
-            stores: [], 
-            loaded: false, 
-            openCreateModal: false, 
-            openDeleteModal: false, 
-            openUpdateModal: false, 
-            store: {} };
+        this.state = {
+            stores: [],
+            loaded: false,
+            openCreateModal: false,
+            openDeleteModal: false,
+            openUpdateModal: false,
+            store: {}, 
+            totalStoresRec: 0,
+            currentPage: 1,
+            totalPage: 1
+        };
         this.fetchStoreData = this.fetchStoreData.bind(this);
     }
 
 
-/************************************* 
- * Function to Add/Create the Store
- **************************************/
+    /************************************* 
+     * Function to Add/Create the Store
+     **************************************/
     fetchStoreData() {
         console.log("Stores:fetchStoreData")
         axios.get('/Stores/GetStore')
@@ -36,13 +40,23 @@ export class Stores extends Component {
                 console.log(res.data);
                 this.setState({
                     Store: res.data,
-                    loaded: true
+                    loaded: true,
+                    totalStoresRec: res.data.length,
+                    totalPage: Math.ceil(res.data.length / 4)
                 })
+                /* To fix the last Page Refresh on Delete to move to previous page */
+                if (((res.data.length % 4) == 0) && (this.state.currentPage > Math.ceil(res.data.length / 4))) {
+                    console.log("Last Page= Current Page");
+                    this.setState({
+                        currentPage: (this.state.currentPage == 1) ? 1 : this.state.currentPage - 1
+                    })
 
+                }
             })
             .catch((err) => {
                 // handle error
                 console.log(err);
+                this.setState({ loaded: false })
             })
             .then(() => {
                 // always executed
@@ -51,75 +65,83 @@ export class Stores extends Component {
 
     }
 
-/************************************************************* 
- * Functions to Learn about the life Cycle of React components
- *************************************************************/
+    /************************************************************* 
+     * Functions to Learn about the life Cycle of React components
+     *************************************************************/
     componentDidMount() {
         console.log("Stores:componentDidMount");
 
         this.fetchStoreData();
     }
 
-/************************************************************* 
- * Functions to  toggle the status of openCreateModal between true and false
- * to Open or notopen the Modal(Child Component AddNewStore)
- *************************************************************/
+    /************************************************************* 
+     * Functions to  toggle the status of openCreateModal between true and false
+     * to Open or notopen the Modal(Child Component AddNewStore)
+     *************************************************************/
     toggleCreateModal = () => {
-        this.setState({openCreateModal: !this.state.openCreateModal})
+        this.setState({ openCreateModal: !this.state.openCreateModal })
         console.log("Stores:toggleCreateModal")
     }
 
-/************************************************************* 
- * Functions to  toggle the status of openDeleteModal between true and false
- * to Open or notopen the Modal(Child Component DeleteStoreModal)
- *************************************************************/
+    /************************************************************* 
+     * Functions to  toggle the status of openDeleteModal between true and false
+     * to Open or notopen the Modal(Child Component DeleteStoreModal)
+     *************************************************************/
 
     toggleDeleteModal = () => {
         this.setState({
             openDeleteModal: !this.state.openDeleteModal
         })
-        
+
         console.log("Stores:toggleDeleteModal")
 
     }
 
 
-/************************************************************* 
- * Functions setStateDeleteModal  copy the Store Row to customer variable which can be passed to
- *  the DeleteStoreModal(Child Component )
- *************************************************************/
+    /************************************************************* 
+     * Functions setStateDeleteModal  copy the Store Row to customer variable which can be passed to
+     *  the DeleteStoreModal(Child Component )
+     *************************************************************/
     setStateDeleteModal = (store) => {
-        this.setState({store: store})
-        console.log("Stores:setStateDeleteModal:Name: "+store.name+" address: "+store.address);
+        this.setState({ store: store })
+        console.log("Stores:setStateDeleteModal:Name: " + store.name + " address: " + store.address);
         this.toggleDeleteModal();
     }
 
- /************************************************************* 
- * Functions to  toggle the status of openUpdateModal between true and false
- * to Open or notopen the Modal(Child Component UpdateStoreModal)
- *************************************************************/
+    /************************************************************* 
+    * Functions to  toggle the status of openUpdateModal between true and false
+    * to Open or notopen the Modal(Child Component UpdateStoreModal)
+    *************************************************************/
     toggleUpdateModal = () => {
         this.setState({
             openUpdateModal: !this.state.openUpdateModal
         })
-        
-        console.log("Stores:toggleUpdateModal:"+this.state.openUpdateModal)
+
+        console.log("Stores:toggleUpdateModal:" + this.state.openUpdateModal)
 
     }
 
-   /************************************************************* 
- * Functions setStateUpdateModal copy the Store Row to customer variable which can be passed to
- *  the UpdateStoreModal(Child Component )
- *************************************************************/
+    /************************************************************* 
+  * Functions setStateUpdateModal copy the Store Row to customer variable which can be passed to
+  *  the UpdateStoreModal(Child Component )
+  *************************************************************/
     setStateUpdateModal = (store) => {
-        this.setState({store: store})
-        console.log("Stores:setStateUpdateModal:Name: "+store.name+" address: "+store.address);
+        this.setState({ store: store })
+        console.log("Stores:setStateUpdateModal:Name: " + store.name + " address: " + store.address);
         this.toggleUpdateModal();
     }
+    /************************************************************* 
+       * Functions pageChange set the Pagination attributes
+       *************************************************************/
+    pageChange = (e, pagData) => {
+        this.setState({ currentPage: pagData.activePage, totalPage: pagData.totalPages })
+        console.log(pagData);
+        console.log("Customers:pageChange:Saleid: Product id: Store id: Sale Time: ");
+    }
 
-/************************************* 
- * Using Semantic UI Modal & Form  as UI
- **************************************/
+    /************************************* 
+     * Using Semantic UI Modal & Form  as UI
+     **************************************/
     render() {
         console.log("Stores:render");
         const Store = this.state.Store;
@@ -128,55 +150,74 @@ export class Stores extends Component {
         const openDeleteModal = this.state.openDeleteModal;
         const openUpdateModal = this.state.openUpdateModal;
         const store = this.state.store;
-        console.log("Stores:render:Name: "+store.name+" address: "+store.address);
+        const totalStoresRec = this.state.totalStoresRec;
+        const currentPage = this.state.currentPage;
+
+        console.log("Stores:render:Name: " + store.name + " address: " + store.address);
         if (loaded) {
             return (
                 <div>
-                    <AddNewStore 
-                    open={openCreateModal} 
-                    toggleCreateModal={() => this.toggleCreateModal()} 
-                    fetchStoreData={() => this.fetchStoreData()}
-                    name={store.name}  />
+                    <AddNewStore
+                        open={openCreateModal}
+                        toggleCreateModal={() => this.toggleCreateModal()}
+                        fetchStoreData={() => this.fetchStoreData()}
+                        name={store.name} />
 
-                    <DeleteStoreModal 
-                    open={openDeleteModal} 
-                    toggleDeleteModal={() => this.toggleDeleteModal()} 
-                    fetchStoreData={() => this.fetchStoreData()} 
-                    store={store} />
-                    
-                    <UpdateStoreModal 
-                    open={openUpdateModal} 
-                    toggleUpdateModal={() => this.toggleUpdateModal()} 
-                    fetchStoreData={() => this.fetchStoreData()} 
-                    store={store} />
+                    <DeleteStoreModal
+                        open={openDeleteModal}
+                        toggleDeleteModal={() => this.toggleDeleteModal()}
+                        fetchStoreData={() => this.fetchStoreData()}
+                        store={store} />
+
+                    <UpdateStoreModal
+                        open={openUpdateModal}
+                        toggleUpdateModal={() => this.toggleUpdateModal()}
+                        fetchStoreData={() => this.fetchStoreData()}
+                        store={store} />
                     <h1> S T O R E S .......</h1>
                     <Button color='blue' content='Add New Store' onClick={this.toggleCreateModal} />
-                    <Table  inverted>
-            <Table.Header>
-            <Table.Row>
-               
-                <Table.HeaderCell>STORE NAME</Table.HeaderCell>
-                <Table.HeaderCell>STORE ADDRESS</Table.HeaderCell>
-                <Table.HeaderCell>ACTION</Table.HeaderCell>
-            </Table.Row>
-        </Table.Header>
+                    <Table inverted>
+                        <Table.Header>
+                            <Table.Row>
 
-        <Table.Body>
-        {Store.map((s) => {
-            return (
-            <Table.Row key={s.id}>
-               
-                <Table.Cell>{s.name}</Table.Cell>
-                <Table.Cell>{s.address}</Table.Cell>
-                <Table.Cell>
-                <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(s)} />
-                <Button color='red' content='Delete'  icon='trash' onClick={() => this.setStateDeleteModal(s)} />
-                </Table.Cell>
-            </Table.Row>
-                  )
-        })}
-        </Table.Body>
-    </Table>
+                                <Table.HeaderCell>STORE NAME</Table.HeaderCell>
+                                <Table.HeaderCell>STORE ADDRESS</Table.HeaderCell>
+                                <Table.HeaderCell>ACTION</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            {Store.map((s,index) => {
+                                if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
+                                    console.log("inside if:" + index)
+                                }
+                                return (
+                                    <Table.Row key={s.id}>
+
+                                        <Table.Cell>{s.name}</Table.Cell>
+                                        <Table.Cell>{s.address}</Table.Cell>
+                                        <Table.Cell>
+                                            <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(s)} />
+                                            <Button color='red' content='Delete' icon='trash' onClick={() => this.setStateDeleteModal(s)} />
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            })}
+                        </Table.Body>
+                    </Table>
+                    <Pagination
+                        boundryRange={0}
+                        activePage={currentPage}
+                        ellipsisItem={null}
+                        firstItem={null}
+                        lastItem={null}
+                        siblingRange={0}
+                        totalPages={Math.ceil(totalStoresRec / 4)}
+                        onPageChange={(e, pageData) => this.pageChange(e, pageData)}
+
+                    />
+
+                    <h2> {currentPage}</h2>
                 </div>
             );
         } else {

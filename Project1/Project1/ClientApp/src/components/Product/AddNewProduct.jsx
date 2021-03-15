@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Header, Modal } from 'semantic-ui-react'
 import axios from 'axios'
-import CurrencyFormat from 'react-currency-format'
 
 /************************************* 
  * Function to Add/Create the Customer
  **************************************/
 const AddNewProduct = (props) => {
   const { open, toggleCreateModal, fetchProductData } = props;
-  const [name, setname] = useState();
-  const [price, setprice] = useState();
+  const [name, setname] = useState("");
+  const [price, setprice] = useState("");
 
   useEffect(() => {
     console.log(name + price)
@@ -36,8 +35,7 @@ const AddNewProduct = (props) => {
         toggleCreateModal();
       });
   }
-var priceFormat=require('react-currency-format')
-
+  //  var CurrencyFormat = require('react-currency-format');
 
 
   /************************************* 
@@ -59,9 +57,9 @@ var priceFormat=require('react-currency-format')
             </Form.Field>
             <Form.Field>
               <label>Product Price</label>
+              <input placeholder='Product price'
+                onChange={(e) => setprice(e.target.value)} />
 
-              <input placeholder='Product price' 
-              onVolumeChange={(e) => setprice(<priceFormat value={e.target.value} displayType={'isNUmericString'} prefix={'$'}/>)} />
             </Form.Field>
           </Form>
         </Modal.Description>

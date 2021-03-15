@@ -5,6 +5,7 @@ import AddNewCustomer from './AddNewCustomer';
 import DeleteCustomerModal from './DeleteCustomerModal';
 import UpdateCustomerModal from './UpdateCustomerModal';
 
+
 /************************************* 
  * Class to CURD the Customer data
  **************************************/
@@ -200,17 +201,20 @@ export class Customers extends Component {
                                 )
                             })}
                         </Table.Body>
-                        <Pagination
-                            boundryRange={0}
-                            activePage={currentPage}
-                            ellipsisItem={null}
-                            firstItem={null}
-                            lastItem={null}
-                            siblingRange={1}
-                            totalPages={Math.ceil(totalCustomersRec / 4)}
-                            onPageChange={(e, pageData) => this.pageChange(e, pageData)}
-                        />
                     </Table>
+                    <Pagination
+                        boundryRange={0}
+                        activePage={currentPage}
+                        ellipsisItem={null}
+                        firstItem={null}
+                        lastItem={null}
+                        siblingRange={0}
+                        totalPages={Math.ceil(totalCustomersRec / 4)}
+                        onPageChange={(e, pageData) => this.pageChange(e, pageData)}
+
+                    />
+
+                    <h2> {currentPage}</h2>
                 </div>
             );
         } else {
