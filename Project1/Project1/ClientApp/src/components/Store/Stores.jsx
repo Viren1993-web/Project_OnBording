@@ -154,7 +154,7 @@ export class Stores extends Component {
                     <Table  inverted>
             <Table.Header>
             <Table.Row>
-                <Table.HeaderCell>ID</Table.HeaderCell>
+               
                 <Table.HeaderCell>STORE NAME</Table.HeaderCell>
                 <Table.HeaderCell>STORE ADDRESS</Table.HeaderCell>
                 <Table.HeaderCell>ACTION</Table.HeaderCell>
@@ -165,7 +165,7 @@ export class Stores extends Component {
         {Store.map((s) => {
             return (
             <Table.Row key={s.id}>
-                <Table.Cell>{s.id}</Table.Cell>
+               
                 <Table.Cell>{s.name}</Table.Cell>
                 <Table.Cell>{s.address}</Table.Cell>
                 <Table.Cell>

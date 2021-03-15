@@ -75,10 +75,8 @@ function SalesCreateModal(props) {
                     fetchSales();
                 })
                 .catch((e) => alert(e));
-
         }
     }
-
     const checking = () => {
         if (date.length !== 10 || date[2] !== '/' || date[5] !== '/') {
             alert("Please input date in the format dd/mm/yyyy");
@@ -87,7 +85,6 @@ function SalesCreateModal(props) {
             return true;
         }
     }
-
     return (
         <Modal
             open={open}

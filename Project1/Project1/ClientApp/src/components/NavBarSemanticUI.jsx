@@ -13,8 +13,14 @@ export default class NavBarSemanticUI extends Component {
         const { activeItem } = this.state
 
         return (
-            <Menu secondary>
+            <Menu inverted>
                 
+                <Menu.Item
+                    as={NavLink} to="/"
+                    name='React'
+                    active={activeItem === 'React'}
+                    onClick={this.handleItemClick}
+                />
                 <Menu.Item
                     as={NavLink} to="/Customer/Customers"
                     name='Customers'

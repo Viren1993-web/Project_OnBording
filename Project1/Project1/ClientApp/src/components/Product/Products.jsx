@@ -4,6 +4,7 @@ import { Table, Button } from 'semantic-ui-react';
 import AddNewProduct from './AddNewProduct';
 import DeleteProductModal from './DeleteProductModal';
 import UpdateProductModal from './UpdateProductModal';
+import { data } from 'jquery';
 
 /************************************* 
  * Class to CURD the Product data
@@ -20,7 +21,8 @@ export class Products extends Component {
             openCreateModal: false, 
             openDeleteModal: false, 
             openUpdateModal: false, 
-            product: {}};
+            product: {}
+        };
         this.fetchProductData = this.fetchProductData.bind(this);
 
     }
@@ -118,6 +120,7 @@ export class Products extends Component {
         this.toggleUpdateModal();
     }
 
+   
 /************************************* 
  * Using Semantic UI Modal & Form  as UI
  **************************************/
@@ -156,7 +159,7 @@ export class Products extends Component {
                     <Table inverted>
             <Table.Header>
             <Table.Row>
-                <Table.HeaderCell>ID</Table.HeaderCell>
+               
                 <Table.HeaderCell>PRODUCT NAME</Table.HeaderCell>
                 <Table.HeaderCell>PRODUCT PRICE</Table.HeaderCell>
                 <Table.HeaderCell>ACTION</Table.HeaderCell>
@@ -167,7 +170,7 @@ export class Products extends Component {
         {Product.map((p) => {
             return (
             <Table.Row key={p.id}>
-                <Table.Cell>{p.id}</Table.Cell>
+                
                 <Table.Cell>{p.name}</Table.Cell>
                 <Table.Cell>{p.price}</Table.Cell>
                 <Table.Cell>
