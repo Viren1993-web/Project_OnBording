@@ -45,6 +45,8 @@ export default class NavBarSemanticUI extends Component {
                     active={activeItem === 'Sales'}
                     onClick={this.handleItemClick}
                 />
+                
+                 
       </Menu >
     )
     }

@@ -8,6 +8,7 @@ import {Customers} from './components/Customer/Customers';
 import {Products} from './components/Product/Products';
 import {Stores} from './components/Store/Stores';
 import Sales from './components/Sale/Sales';
+
 import './custom.css'
 
 export default class App extends Component {
@@ -23,6 +24,7 @@ export default class App extends Component {
         <Route path='/Product/Products' component={Products} />
         <Route path='/Store/Stores' component={Stores} />
         <Route path='/Sale/Sales' component={Sales} />
+        
       </Layout>
     );
   }

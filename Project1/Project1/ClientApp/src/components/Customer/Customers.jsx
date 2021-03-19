@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import TableHeader from './TableHeader';
 import { Table, Button, Pagination } from 'semantic-ui-react';
 import AddNewCustomer from './AddNewCustomer';
 import DeleteCustomerModal from './DeleteCustomerModal';
 import UpdateCustomerModal from './UpdateCustomerModal';
+//import { DataGrid } from '@material-ui/data-grid';
+import { TableSortLabel, TableBody, TableRow, TableCell, TableContainer, TableHead } from '@material-ui/core';
+//import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Sort } from '@syncfusion/ej2-react-grids';
 
 
 /************************************* 
@@ -24,14 +28,17 @@ export class Customers extends Component {
             customer: {},
             totalCustomersRec: 0,
             currentPage: 1,
-            totalPage: 1
+            totalPage: 1,
+
         };
         this.fetchCustomerData = this.fetchCustomerData.bind(this);
     }
 
+
     /************************************* 
     * Function to Fetch the Customer Data
     **************************************/
+
     fetchCustomerData() {
         console.log("Customers:fetchCustomerData")
         axios.get('/Customers/GetCustomer')
@@ -64,7 +71,6 @@ export class Customers extends Component {
             });
 
     }
-
 
     /************************************************************* 
      * Functions to Learn about the life Cycle of React components
@@ -139,92 +145,106 @@ export class Customers extends Component {
         console.log(pagData);
         console.log("Customers:pageChange:Saleid: Product id: Store id: Sale Time: ");
     }
-    /************************************* 
-     * Using Semantic UI Modal & Form  as UI
-     **************************************/
-    render() {
-        console.log("Customers:render");
-        const customers = this.state.customers;
-        const loaded = this.state.loaded;
-        const openCreateModal = this.state.openCreateModal;
-        const openDeleteModal = this.state.openDeleteModal;
-        const openUpdateModal = this.state.openUpdateModal;
-        const customer = this.state.customer;
-        const totalCustomersRec = this.state.totalCustomersRec;
-        const currentPage = this.state.currentPage;
+   
+  
 
-        console.log("Customers:render:Name: " + customer.name + " address: " + customer.address);
-        if (loaded) {
-            return (
-                <div>
-                    <AddNewCustomer
-                        open={openCreateModal}
-                        toggleCreateModal={() => this.toggleCreateModal()}
-                        fetchCustomerData={() => this.fetchCustomerData()}
-                    />
+        /************************************* 
+         * Using Semantic UI Modal & Form  as UI
+         **************************************/
+        render() {
+            console.log("Customers:render");
+            const customers = this.state.customers;
+            const loaded = this.state.loaded;
+            const openCreateModal = this.state.openCreateModal;
+            const openDeleteModal = this.state.openDeleteModal;
+            const openUpdateModal = this.state.openUpdateModal;
+            const customer = this.state.customer;
+            const totalCustomersRec = this.state.totalCustomersRec;
+            const currentPage = this.state.currentPage;
+            const valueToOrderBy = this.state.tableContent;
+            const orderDirection = this.state.tableContent;
+            const handleRequestSort = this.state.tableContent;
+           
+            console.log("Customers:render:Name: " + customer.name + " address: " + customer.address);
+            if (loaded) {
+                return (
+                    <div>
+                        <AddNewCustomer
+                            open={openCreateModal}
+                            toggleCreateModal={() => this.toggleCreateModal()}
+                            fetchCustomerData={() => this.fetchCustomerData()}
+                        />
 
-                    <DeleteCustomerModal
-                        open={openDeleteModal}
-                        toggleDeleteModal={() => this.toggleDeleteModal()}
-                        fetchCustomerData={() => this.fetchCustomerData()}
-                        customer={customer} />
+                        <DeleteCustomerModal
+                            open={openDeleteModal}
+                            toggleDeleteModal={() => this.toggleDeleteModal()}
+                            fetchCustomerData={() => this.fetchCustomerData()}
+                            customer={customer} />
 
-                    <UpdateCustomerModal
-                        open={openUpdateModal}
-                        toggleUpdateModal={() => this.toggleUpdateModal()}
-                        fetchCustomerData={() => this.fetchCustomerData()}
-                        customer={customer} />
+                        <UpdateCustomerModal
+                            open={openUpdateModal}
+                            toggleUpdateModal={() => this.toggleUpdateModal()}
+                            fetchCustomerData={() => this.fetchCustomerData()}
+                            customer={customer} />
 
-                    <h1> C U S T O M E R S...... </h1>
-                    <Button color='blue' content='Add New Customer' onClick={this.toggleCreateModal} />
-                    <Button color='green' content='Refresh' onClick={this.fetchCustomerData} />
-                    <Table inverted>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>CUSTOMER NAME</Table.HeaderCell>
-                                <Table.HeaderCell>CUSTOMER ADDRESS</Table.HeaderCell>
-                                <Table.HeaderCell>ACTION</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
+                        <h1> C U S T O M E R S...... </h1>
+                        <Button color='blue' content='Add New Customer' onClick={this.toggleCreateModal} />
+                        <Button color='green' content='Refresh' onClick={this.fetchCustomerData} />
 
-                        <Table.Body>
-                            {customers.map((c, index) => {
-                                if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
-                                    console.log("inside if:" + index)
-                                
-                                return (
-                                    <Table.Row key={c.id}>
-                                        <Table.Cell>{c.name}</Table.Cell>
-                                        <Table.Cell>{c.address}</Table.Cell>
-                                        <Table.Cell>
-                                            <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(c)} />
-                                            <Button color='red' content='Delete' icon='trash' onClick={() => this.setStateDeleteModal(c)} />
-                                        </Table.Cell>
-                                    </Table.Row>
-                                )
-        }})}
-                        </Table.Body>
-                    </Table>
-                    
-                    <Pagination
-                        boundryRange={0}
-                        activePage={currentPage}
-                        ellipsisItem={null}
-                        firstItem={null}
-                        lastItem={null}
-                        siblingRange={0}
-                        totalPages={Math.ceil(totalCustomersRec / 4)}
-                        onPageChange={(e, pageData) => this.pageChange(e, pageData)}
-                    />
-                    <h2> {currentPage}</h2>
-                   
-                </div>
-            );
-        } else {
-            return (
-                <div>
-                    <h2> L O A D I N G .....</h2>
-                </div>);
+                        <Table inverted sortable celled fixed>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell 
+                                    >
+                                        Customer Name
+                                </Table.HeaderCell>
+                                    <Table.HeaderCell
+                                       
+                                    >
+                                        Address
+                                </Table.HeaderCell>
+                                    <Table.HeaderCell>ACTION</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                                {customers.map((c, index) => {
+                                    if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
+                                        console.log("inside if:" + index)
+
+                                        return (
+                                            <Table.Row key={c.id}>
+                                                <Table.Cell>{c.name}</Table.Cell>
+                                                <Table.Cell>{c.address}</Table.Cell>
+                                                <Table.Cell>
+                                                    <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(c)} />
+                                                    <Button color='red' content='Delete' icon='trash' onClick={() => this.setStateDeleteModal(c)} />
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        );
+                                    }
+                                })}
+                            </Table.Body>
+                        </Table>
+
+                        <Pagination
+                            boundryRange={0}
+                            activePage={currentPage}
+                            ellipsisItem={null}
+                            firstItem={null}
+                            lastItem={null}
+                            siblingRange={0}
+                            totalPages={Math.ceil(totalCustomersRec / 4)}
+                            onPageChange={(e, pageData) => this.pageChange(e, pageData)}
+                        />
+                        <h2> {currentPage}</h2>
+
+                    </div>
+                );
+            } else {
+                return (
+                    <div>
+                        <h2> L O A D I N G .....</h2>
+                    </div>);
+            }
         }
     }
-}

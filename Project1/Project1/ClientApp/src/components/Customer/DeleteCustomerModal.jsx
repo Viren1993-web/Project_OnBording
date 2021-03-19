@@ -8,9 +8,7 @@ import axios from 'axios'
 
 const DeleteCustomerModal = (props) => {
   const { open, toggleDeleteModal, fetchCustomerData, customer } = props;
-
-
-  useEffect(() => {
+ useEffect(() => {
     console.log("UnMount a Component using Hook")
     return () => {
       console.log("UnMount a Component using Hook1")

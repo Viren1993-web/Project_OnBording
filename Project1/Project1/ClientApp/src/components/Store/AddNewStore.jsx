@@ -78,7 +78,7 @@ const AddNewStore = (props) => {
           <Form>
             <Form.Field>
               <label>Store Name</label>
-              <input placeholder='Store Name' value={name} onChange={(e) => setname(e.target.value)} />
+              <input placeholder='Store Name' onChange={(e) => setname(e.target.value)} />
             </Form.Field>
             <Form.Field>
               <label>Store Address</label>

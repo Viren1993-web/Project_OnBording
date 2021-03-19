@@ -44,8 +44,8 @@ export class Products extends Component {
                     totalProductsRec: res.data.length,
                     totalPage: Math.ceil(res.data.length / 4)
                 })
-                 /* To fix the last Page Refresh on Delete to move to previous page */
-                 if (((res.data.length % 4) == 0) && (this.state.currentPage > Math.ceil(res.data.length / 4))) {
+                /* To fix the last Page Refresh on Delete to move to previous page */
+                if (((res.data.length % 4) == 0) && (this.state.currentPage > Math.ceil(res.data.length / 4))) {
                     console.log("Last Page= Current Page");
                     this.setState({
                         currentPage: (this.state.currentPage == 1) ? 1 : this.state.currentPage - 1
@@ -131,7 +131,17 @@ export class Products extends Component {
         console.log("Products:setStateUpdateModal:Name: " + product.name + " address: " + product.address);
         this.toggleUpdateModal();
     }
-
+/************************************************************* 
+        * Functions pageChange set the Pagination attributes
+        *************************************************************/
+ pageChange = (e, pagData) => {
+    this.setState({
+        currentPage: pagData.activePage,
+        totalPage: pagData.totalPages
+    })
+    console.log(pagData);
+    console.log("Products:pageChange:Saleid: Product id: Store id: Sale Time: ");
+}
 
     /************************************* 
      * Using Semantic UI Modal & Form  as UI
@@ -182,24 +192,25 @@ export class Products extends Component {
                         </Table.Header>
 
                         <Table.Body>
-                            {Product.map((p,index) => {
-                                 if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
+                            {Product.map((p, index) => {
+                                if ((index >= ((currentPage * 4) - 4)) && (index < (currentPage * 4))) {
                                     console.log("inside if:" + index)
-                                
-                                return (
-                                    <Table.Row key={p.id}>
 
-                                        <Table.Cell>{p.name}</Table.Cell>
-                                        <Table.Cell>
-                                            <CurrencyFormat value={p.price} displayType={'text'} prefix={'$'} />
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(p)} />
-                                            <Button color='red' content='Delete' icon='trash' onClick={() => this.setStateDeleteModal(p)} />
-                                        </Table.Cell>
-                                    </Table.Row>
-                                )
-        }})}
+                                    return (
+                                        <Table.Row key={p.id}>
+
+                                            <Table.Cell>{p.name}</Table.Cell>
+                                            <Table.Cell>
+                                                <CurrencyFormat value={p.price} displayType={'text'} prefix={'$'} />
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <Button color='yellow' content='Edit' icon='edit' onClick={() => this.setStateUpdateModal(p)} />
+                                                <Button color='red' content='Delete' icon='trash' onClick={() => this.setStateDeleteModal(p)} />
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    );
+                                }
+                            })}
                         </Table.Body>
                     </Table>
                     <Pagination
@@ -211,9 +222,7 @@ export class Products extends Component {
                         siblingRange={0}
                         totalPages={Math.ceil(totalProductsRec / 4)}
                         onPageChange={(e, pageData) => this.pageChange(e, pageData)}
-
                     />
-
                     <h2> {currentPage}</h2>
                 </div>
             );
